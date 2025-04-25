@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block title %}Form Barang{% endblock %}
+{% block content %}
+<h2>{{ barang and 'Edit Barang' or 'Tambah Barang' }}</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label>Nama Barang</label>
+        <input class="form-control" type="text" name="nama" required value="{{ barang and barang[1] or '' }}">
+    </div>
+    <div class="mb-3">
+        <label>Kategori</label>
+        <input class="form-control" type="text" name="kategori" value="{{ barang and barang[2] or '' }}">
+    </div>
+    <div class="mb-3">
+        <label>Harga Beli</label>
+        <input class="form-control" type="number" step="0.01" name="harga_beli" required value="{{ barang and barang[3] or '' }}">
+    </div>
+    <div class="mb-3">
+        <label>Harga Jual</label>
+        <input class="form-control" type="number" step="0.01" name="harga_jual" required value="{{ barang and barang[4] or '' }}">
+    </div>
+    <div class="mb-3">
+        <label>Stok</label>
+        <input class="form-control" type="number" name="stok" required value="{{ barang and barang[5] or '' }}">
+    </div>
+    <button class="btn btn-success">Simpan</button>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Dashboard Admin</h2>
+  <p>Selamat datang, {{ current_user.username }} (Role: {{ current_user.role }})</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <a href="{{ url_for('main.list_barang') }}" class="btn btn-primary w-100 mb-3">Kelola Barang</a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('main.kelola_user') }}" class="btn btn-secondary w-100 mb-3">Kelola User</a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('main.laporan_penjualan') }}" class="btn btn-success w-100 mb-3">Laporan Penjualan</a>
+    </div>
+  </div>
+{% endblock %}

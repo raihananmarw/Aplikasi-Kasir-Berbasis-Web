@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Laporan Penjualan</h2>
+
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label for="tanggal_awal">Tanggal Awal</label>
+      <input type="date" name="tanggal_awal" class="form-control" value="{{ tanggal_awal }}">
+    </div>
+    <div class="col-md-4">
+      <label for="tanggal_akhir">Tanggal Akhir</label>
+      <input type="date" name="tanggal_akhir" class="form-control" value="{{ tanggal_akhir }}">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+  </form>
+
+  {% if penjualan %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Detail</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in penjualan %}
+          <tr>
+            <td>{{ p.tanggal.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ p.detail }}</td>
+            <td>Rp{{ "{:,.0f}".format(p.total) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2"><strong>Total Omzet</strong></td>
+          <td><strong>Rp{{ "{:,.0f}".format(total_omzet) }}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  {% else %}
+    <div class="alert alert-info">Tidak ada data penjualan untuk tanggal tersebut.</div>
+  {% endif %}
+
+  <div class="mb-3">
+    <a href="{{ url_for('main.export_penjualan_excel') }}" class="btn btn-success">
+      Export Excel
+    </a>
+  </div>
+  
+{% endblock %}

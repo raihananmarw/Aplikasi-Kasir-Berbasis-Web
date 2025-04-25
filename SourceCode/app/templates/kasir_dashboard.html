@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h2>Dashboard Kasir</h2>
+  <p>Selamat datang, {{ current_user.username }} (Role: {{ current_user.role }})</p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <a href="{{ url_for('main.transaksi') }}" class="btn btn-primary w-100 mb-3">Transaksi Baru</a>
+    </div>
+    <div class="col-md-6">
+      <a href="{{ url_for('main.riwayat_transaksi') }}" class="btn btn-info w-100 mb-3">Riwayat Transaksi</a>
+    </div>
+  </div>
+{% endblock %}

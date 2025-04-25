@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h3>Transaksi Penjualan</h3>
+
+<form id="formTransaksi" method="POST">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <select class="form-control" id="barangSelect">
+        <option value="">-- Pilih Barang --</option>
+        {% for barang in barangs %}
+          <option value="{{ barang.id }}" data-harga="{{ barang.harga_jual }}">
+            {{ barang.nama }} - Rp{{ barang.harga_jual }}
+          </option>
+        {% endfor %}
+      </select>
+                   
+    </div>
+    <div class="col-md-3">
+      <label for="jumlah">Jumlah</label>
+      <input type="number" class="form-control" id="jumlahInput" min="1" value="1">
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+      <button type="button" class="btn btn-success w-100" onclick="tambahBarang()">Tambah</button>
+    </div>
+  </div>
+
+  <h5>Daftar Belanja:</h5>
+  <table class="table table-bordered" id="daftarBelanja">
+    <thead>
+      <tr>
+        <th>Barang</th>
+        <th>Harga Satuan</th>
+        <th>Jumlah</th>
+        <th>Subtotal</th>
+        <th>Hapus</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Total</strong></td>
+        <td colspan="2" id="totalHarga">Rp0</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- input hidden untuk dikirim ke backend -->
+  <div id="formBarangInput"></div>
+
+  <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+</form>
+
+<script>
+  let total = 0;
+
+  function tambahBarang() {
+    const barangSelect = document.getElementById('barangSelect');
+    const jumlahInput = document.getElementById('jumlahInput');
+    const daftarBelanja = document.querySelector('#daftarBelanja tbody');
+    const formBarangInput = document.getElementById('formBarangInput');
+
+    const barangId = barangSelect.value;
+    const nama = barangSelect.options[barangSelect.selectedIndex].text;
+    const harga = parseInt(barangSelect.options[barangSelect.selectedIndex].getAttribute('data-harga'));
+    const jumlah = parseInt(jumlahInput.value);
+
+    if (!barangId || jumlah < 1) {
+      alert("Pilih barang dan jumlah yang valid.");
+      return;
+    }
+
+    const subtotal = harga * jumlah;
+    total += subtotal;
+
+    // Tambahkan baris ke tabel
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${nama}</td>
+      <td>Rp${harga}</td>
+      <td>${jumlah}</td>
+      <td>Rp${subtotal}</td>
+      <td><button type="button" class="btn btn-sm btn-danger" onclick="hapusRow(this, ${subtotal})">X</button></td>
+    `;
+    daftarBelanja.appendChild(row);
+
+    // Tambahkan input hidden untuk dikirim ke backend
+    formBarangInput.innerHTML += `
+      <input type="hidden" name="barang_id[]" value="${barangId}">
+      <input type="hidden" name="jumlah[]" value="${jumlah}">
+    `;
+
+    // Update total
+    document.getElementById('totalHarga').innerText = 'Rp' + total;
+  }
+
+  function hapusRow(button, subtotal) {
+    button.closest('tr').remove();
+    total -= subtotal;
+    document.getElementById('totalHarga').innerText = 'Rp' + total;
+  }
+</script>
+{% endblock %}

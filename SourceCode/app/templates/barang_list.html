@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block title %}Stok Barang{% endblock %}
+{% block content %}
+<h2>Daftar Stok Barang</h2>
+<a href="{{ url_for('main.tambah_barang') }}" class="btn btn-primary mb-3">Tambah Barang</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Harga Beli</th>
+            <th>Harga Jual</th>
+            <th>Stok</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in barang %}
+        <tr>
+            <td>{{ b[0] }}</td>
+            <td>{{ b[1] }}</td>
+            <td>{{ b[2] }}</td>
+            <td>{{ b[3] }}</td>
+            <td>{{ b[4] }}</td>
+            <td>{{ b[5] }}</td>
+            <td>
+                <a href="{{ url_for('main.edit_barang', id=b[0]) }}" class="btn btn-sm btn-warning">Edit</a>
+                <form method="POST" action="{{ url_for('main.hapus_barang', id=b[0]) }}" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
+                    <button class="btn btn-sm btn-danger">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

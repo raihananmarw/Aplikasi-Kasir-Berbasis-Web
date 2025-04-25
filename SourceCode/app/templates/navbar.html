@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% if current_user.role == 'admin' %}{{ url_for('main.admin_dashboard') }}{% elif current_user.role == 'kasir' %}{{ url_for('main.kasir_dashboard') }}{% endif %}">Aplikasi Kasir</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        {% if current_user.is_authenticated %}
+          {% if current_user.role == 'admin' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.admin_dashboard') }}">Dashboard</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.register_kasir') }}">Buat Akun</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.list_barang') }}">Stok Barang</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.laporan_penjualan') }}">Laporan Penjualan</a>
+            </li>
+          {% elif current_user.role == 'kasir' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.kasir_dashboard') }}">Dashboard</a>
+            </li>
+          {% endif %}
+    
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.transaksi') }}">Transaksi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.profil') }}">Profil</a>
+          </li>
+        {% endif %}
+      </ul>
+    
+      <ul class="navbar-nav">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> {{ current_user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li class="dropdown-item disabled text-muted">Role: {{ current_user.role|capitalize }}</li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{{ url_for('main.logout') }}">Logout</a></li>
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+    </div>        
+  </div>
+</nav>
